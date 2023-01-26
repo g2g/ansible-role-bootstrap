@@ -47,6 +47,15 @@
   ansible.builtin.setup:
   become: no
 
+- name: Gather bootstrap facts
+  ansible.builtin.include_tasks:
+    file: gather_facts.yml
+
+- name: Update cache
+  ansible.builtin.apt:
+    update_cache: yes
+  when: bootstrap_os_family == "Debian"
+
 - name: Install bootstrap packages (package)
   ansible.builtin.package:
     name: "{{ item }}"
